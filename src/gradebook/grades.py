@@ -1,5 +1,4 @@
 import json
-import os
 
 
 class GradeBook:
@@ -81,8 +80,9 @@ class GradeBook:
         }
 
     def load_from_file(self, path):
-        try:
-            with open(path) as f:
-                self.students = json.load(f)
-        except:
-            self.students = {}
+        with open(path) as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError as exc:
+                raise ValueError("Invalid grade file") from exc
+        self.students = data
